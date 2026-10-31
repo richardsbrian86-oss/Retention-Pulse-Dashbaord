@@ -12,7 +12,11 @@ await build({
   format: 'esm',
   sourcemap: false,
   minify: false,
-  legalComments: 'none'
+  legalComments: 'none',
+  // Express and its deps use CommonJS require, which ESM bundles lack.
+  banner: {
+    js: "import { createRequire as __createRequire } from 'node:module'; const require = __createRequire(import.meta.url);"
+  }
 });
 
 console.log('Built dist/server.mjs');
